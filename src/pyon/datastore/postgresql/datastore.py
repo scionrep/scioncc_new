@@ -412,8 +412,6 @@ class PostgresPyonDataStore(PostgresDataStore):
         deleted_filter = ""
         if not ds_sub:
             deleted_filter = tablename + ".lcstate<>'DELETED'"
-        elif ds_sub == "assoc":
-            deleted_filter = tablename + ".retired<>true"
         if query_clause and deleted_filter:
             query_clause += " AND " + deleted_filter
         elif not query_clause and deleted_filter:

@@ -21,7 +21,7 @@ class TestResources(IonUnitTestCase):
         default_workflow = lcs_workflows['TestInstrument']
 
         self.assertEquals(len(default_workflow.lcstate_states), 7)
-        self.assertEquals(len(default_workflow.lcstate_transitions), 24)
+        self.assertEquals(len(default_workflow.lcstate_transitions), 25)
 
         self.assertEquals(len(default_workflow.availability_states), 3)
         self.assertEquals(len(default_workflow.availability_transitions), 6)
