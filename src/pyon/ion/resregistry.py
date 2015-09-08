@@ -850,7 +850,9 @@ class ResourceRegistryServiceWrapper(object):
             return getattr(self, attr)
         return getattr(self._rr, attr)
 
-    def create(self, object=None):
+    def create(self, object=None, actor_id=''):
+        if actor_id:
+            return self._rr.create(object=object, actor_id=actor_id)
         return self._rr.create(object=object, actor_id=get_ion_actor_id(self._process))
 
     def create_attachment(self, resource_id='', attachment=None):
