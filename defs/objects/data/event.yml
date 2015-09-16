@@ -3,7 +3,7 @@ Event:
   origin: ""        # the origin of the event (content specific to subtype). Mostly a resource id
   origin_type: ""   # the type of origin (e.g. resource type, etc) or empty
   description: ""   # readable description of the event (not required)
-  ts_created: ""    # timestamp of event created in millis in UNIX epoch
+  ts_created: !!python/long 0    # timestamp of event created in millis in UNIX epoch
   base_types: []    # List of event super types
   sub_type: ""      # A specialization of the event_type expressed by this object type (or empty)
   actor_id: ""      # The actor ID requesting the action causing the event
@@ -13,7 +13,7 @@ Event:
 EventComputedAttributes:
   event: !Event           # The actual event object or None
   event_id: ""            # The event id of the described Event
-  ts_computed: ""         # Timestamp when event attributes were computed
+  ts_computed: !!python/long 0        # Timestamp when event attributes were computed
   event_summary: ""       # A summary str describing event based on type and core attributes
   special_attributes: ""  # A str with additional event attributes in printable form
   event_attributes_formatted: ""  # A str with event attributes in pretty printed form with newlines

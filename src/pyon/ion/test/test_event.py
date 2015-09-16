@@ -82,10 +82,10 @@ class TestEventsInt(IonIntegrationTestCase):
         with self.assertRaises(BadRequest) as cm:
             event_obj = bootstrap.IonObject('ResourceEvent', origin='specific', description='more testing', ts_created='2423')
             pub.publish_event_object(event_obj)
-        self.assertIn( 'The ts_created value is not a valid timestamp',cm.exception.message)
+        self.assertIn( 'This ts_created value is too far in the future',cm.exception.message)
 
         with self.assertRaises(BadRequest) as cm:
-            event_obj = bootstrap.IonObject('ResourceEvent', origin='specific', description='more testing', ts_created='1000494978462')
+            event_obj = bootstrap.IonObject('ResourceEvent', origin='specific', description='more testing', ts_created=1000494978462)
             pub.publish_event_object(event_obj)
         self.assertIn( 'This ts_created value is too old',cm.exception.message)
 

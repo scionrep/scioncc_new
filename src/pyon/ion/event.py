@@ -18,7 +18,7 @@ from pyon.ion.identifier import create_unique_event_id, create_simple_unique_id
 from pyon.net.endpoint import Publisher, Subscriber, BaseEndpoint
 from pyon.net.transport import XOTransport, NameTrio
 from pyon.util.async import spawn
-from pyon.util.containers import get_ion_ts_millis, is_valid_ts
+from pyon.util.containers import get_ion_ts_millis
 from pyon.util.log import log
 
 from interface.objects import Event
@@ -120,20 +120,16 @@ class EventPublisher(Publisher):
 
         # Ensure valid created timestamp if supplied
         if event_object.ts_created:
-
-            if not is_valid_ts(event_object.ts_created):
-                raise BadRequest("The ts_created value is not a valid timestamp: '%s'" % (event_object.ts_created))
-
             # Reject events that are older than specified time
-            if int(event_object.ts_created) > ( current_time + VALID_EVENT_TIME_PERIOD ):
+            if event_object.ts_created > current_time + VALID_EVENT_TIME_PERIOD:
                 raise BadRequest("This ts_created value is too far in the future:'%s'" % (event_object.ts_created))
 
             # Reject events that are older than specified time
-            if int(event_object.ts_created) < (current_time - VALID_EVENT_TIME_PERIOD) :
+            if event_object.ts_created < current_time - VALID_EVENT_TIME_PERIOD:
                 raise BadRequest("This ts_created value is too old:'%s'" % (event_object.ts_created))
 
         else:
-            event_object.ts_created = str(current_time)
+            event_object.ts_created = current_time
 
         # Set the actor id based on
         if not event_object.actor_id:

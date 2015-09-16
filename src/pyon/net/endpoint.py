@@ -854,7 +854,7 @@ class RequestEndpointUnit(BidirectionalEndpointUnit):
             timeout = CFG.get_safe('container.messaging.timeout.receive', 10)
 
         # we have a timeout, update reply-by header
-        headers['reply-by'] = str(int(headers['ts']) + int(timeout * 1000))
+        headers['reply-by'] = long(headers['ts']) + long(timeout * 1000)
         if self.channel._recv_name is None:
             # Only set name when channel is new.
             # Create a name for the sender/queue for the response to arrive back

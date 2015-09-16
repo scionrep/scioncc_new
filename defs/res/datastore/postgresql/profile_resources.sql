@@ -2,7 +2,7 @@
 CREATE TABLE "%(ds)s" (id varchar(300) PRIMARY KEY, rev int, doc json,
     type_ varchar(80), lcstate varchar(10), availability varchar(14), visibility int,
     name varchar(300),
-    ts_created varchar(14), ts_updated varchar(14),
+    ts_created bigint, ts_updated bigint,
     vertical_range numrange, temporal_range numrange,
     deleted boolean);
 
