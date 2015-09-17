@@ -14,7 +14,6 @@ BASIC FUNCTIONALITY:
 
 ISSUES/MISSING FEATURES:
 - Check connection DSN credentials to validate correct config for both users
-- ts_created/ts_updated better as bigint
 - Connection reset when database restarted
 - support descending order for all finds
 - drop database timeout (concurrent users exist) does not raise exception in clear_db
