@@ -76,7 +76,7 @@ Negotiation: !Extends_InformationResource
 # This is a proxy object used to convey a contextualized negotiation to the UI in lieu of
 # actual Negotiation objects.
 NegotiationRequest:
-  ts_updated: ""
+  ts_updated: 0L
   negotiation_id:
   negotiation_type: ""
   negotiation_status: ""

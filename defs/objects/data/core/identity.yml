@@ -52,9 +52,9 @@ ActorIdentity: !Extends_SystemResource
   # Number of failed logins since last successful login
   auth_fail_count: 0
   # Last successful login
-  auth_ts_last: ""
+  auth_ts_last: !!python/long 0
   # Last successful login
-  auth_ts_last_fail: ""
+  auth_ts_last_fail: !!python/long 0
   # Password reset token
   passwd_reset_token: !SecurityToken
   # Session information (cleared on

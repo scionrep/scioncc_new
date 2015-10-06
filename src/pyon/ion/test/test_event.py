@@ -80,14 +80,14 @@ class TestEventsInt(IonIntegrationTestCase):
         self.assertEqual(event_obj, pub.publish_event_object(event_obj))
 
         with self.assertRaises(BadRequest) as cm:
-            event_obj = bootstrap.IonObject('ResourceEvent', origin='specific', description='more testing', ts_created='2423')
+            event_obj = bootstrap.IonObject('ResourceEvent', origin='specific', description='more testing', ts_created=2423)
             pub.publish_event_object(event_obj)
-        self.assertIn( 'The ts_created value is not a valid timestamp',cm.exception.message)
+        self.assertIn('This ts_created value is too old',cm.exception.message)
 
         with self.assertRaises(BadRequest) as cm:
-            event_obj = bootstrap.IonObject('ResourceEvent', origin='specific', description='more testing', ts_created='1000494978462')
+            event_obj = bootstrap.IonObject('ResourceEvent', origin='specific', description='more testing', ts_created=1000494978462)
             pub.publish_event_object(event_obj)
-        self.assertIn( 'This ts_created value is too old',cm.exception.message)
+        self.assertIn('This ts_created value is too old',cm.exception.message)
 
         with self.assertRaises(BadRequest) as cm:
             event_obj = bootstrap.IonObject('ResourceEvent', origin='specific', description='more testing')
@@ -103,10 +103,10 @@ class TestEventsInt(IonIntegrationTestCase):
 
         self.assertEquals(len(res), self.count)
         self.assertEquals(res[0].description, "hello")
-        self.assertAlmostEquals(int(res[0].ts_created), int(get_ion_ts()), delta=5000)
+        self.assertAlmostEquals(res[0].ts_created, get_ion_ts(), delta=5000)
 
         self.assertEquals(res[1].description, "more testing")
-        self.assertAlmostEquals(int(res[1].ts_created), int(get_ion_ts()), delta=5000)
+        self.assertAlmostEquals(res[1].ts_created, get_ion_ts(), delta=5000)
 
     def test_pub_on_different_origins(self):
         ar = event.AsyncResult()
@@ -374,7 +374,7 @@ class TestEventRepository(IonUnitTestCase):
         ts = 1328680477138
         events2 = []
         for i in xrange(5):
-            ev = Event(origin="resource2", ts_created=str(ts + i))
+            ev = Event(origin="resource2", ts_created=ts + i)
             event_id = event_repo.put_event(ev)
             events2.append((ev,event_id))
 
@@ -387,16 +387,16 @@ class TestEventRepository(IonUnitTestCase):
         events_r = event_repo.find_events(origin='resource2', limit=3)
         self.assertEquals(len(events_r), 3)
 
-        events_r = event_repo.find_events(origin='resource2', start_ts=str(ts+3))
+        events_r = event_repo.find_events(origin='resource2', start_ts=ts+3)
         self.assertEquals(len(events_r), 2)
 
-        events_r = event_repo.find_events(origin='resource2', end_ts=str(ts+2))
+        events_r = event_repo.find_events(origin='resource2', end_ts=ts+2)
         self.assertEquals(len(events_r), 3)
 
-        events_r = event_repo.find_events(origin='resource2', start_ts=str(ts+3), end_ts=str(ts+4))
+        events_r = event_repo.find_events(origin='resource2', start_ts=ts+3, end_ts=ts+4)
         self.assertEquals(len(events_r), 2)
 
-        events_r = event_repo.find_events(start_ts=str(ts+3), end_ts=str(ts+4))
+        events_r = event_repo.find_events(start_ts=ts+3, end_ts=ts+4)
         self.assertEquals(len(events_r), 2)
 
         event3 = ResourceLifecycleEvent(origin="resource3")
@@ -413,7 +413,7 @@ class TestEventRepository(IonUnitTestCase):
                    'origin': 'instrument_1',
                    'origin_type': 'PlatformDevice',
                    'sub_type': 'input_voltage',
-                   'ts_created': '1364121284585',
+                   'ts_created': 1364121284585,
                    'type_': 'ResourceLifecycleEvent'},
                   {'_id': 'b40731684e41418082e1727f3cf61026',
                    'base_types': ['Event', 'ResourceEvent'],
@@ -421,7 +421,7 @@ class TestEventRepository(IonUnitTestCase):
                    'origin': 'instrument_1',
                    'origin_type': 'PlatformDevice',
                    'sub_type': 'input_voltage',
-                   'ts_created': '1364121284609',
+                   'ts_created': 1364121284609,
                    'type_': 'ResourceModifiedEvent'}]
 
         dsm = DatastoreManager()
@@ -477,13 +477,13 @@ class TestEventRepoInt(IonIntegrationTestCase):
     def test_event_query(self):
         t0 = 136304640000
         events = [
-            ("RME1", ResourceCommandEvent(origin="O1", origin_type="OT1", sub_type="ST1", ts_created=str(t0))),
-            ("RME2", ResourceCommandEvent(origin="O2", origin_type="OT1", sub_type="ST2", ts_created=str(t0+1))),
-            ("RME3", ResourceCommandEvent(origin="O2", origin_type="OT2", sub_type="ST3", ts_created=str(t0+2))),
+            ("RME1", ResourceCommandEvent(origin="O1", origin_type="OT1", sub_type="ST1", ts_created=t0)),
+            ("RME2", ResourceCommandEvent(origin="O2", origin_type="OT1", sub_type="ST2", ts_created=t0+1)),
+            ("RME3", ResourceCommandEvent(origin="O2", origin_type="OT2", sub_type="ST3", ts_created=t0+2)),
 
-            ("RLE1", ResourceOperatorEvent(origin="O1", origin_type="OT3", sub_type="ST4", ts_created=str(t0+3))),
-            ("RLE2", ResourceOperatorEvent(origin="O3", origin_type="OT3", sub_type="ST5", ts_created=str(t0+4))),
-            ("RLE3", ResourceOperatorEvent(origin="O3", origin_type="OT2", sub_type="ST6", ts_created=str(t0+5))),
+            ("RLE1", ResourceOperatorEvent(origin="O1", origin_type="OT3", sub_type="ST4", ts_created=t0+3)),
+            ("RLE2", ResourceOperatorEvent(origin="O3", origin_type="OT3", sub_type="ST5", ts_created=t0+4)),
+            ("RLE3", ResourceOperatorEvent(origin="O3", origin_type="OT2", sub_type="ST6", ts_created=t0+5)),
         ]
         ev_by_alias = {}
         for (alias, event) in events:
@@ -559,12 +559,12 @@ class TestEventRepoInt(IonIntegrationTestCase):
         # --- Temporal range queries
 
         eq = EventQuery()
-        eq.set_filter(eq.filter_ts_created(str(t0), str(t0)))
+        eq.set_filter(eq.filter_ts_created(t0, t0))
         ev_obj = self.er.find_events_query(query=eq.get_query(), id_only=False)
         self.assertEquals(len(ev_obj), 1)
 
         eq = EventQuery()
-        eq.set_filter(eq.filter_ts_created(str(t0), str(t0+1)))
+        eq.set_filter(eq.filter_ts_created(t0, t0+1))
         ev_obj = self.er.find_events_query(query=eq.get_query(), id_only=False)
         self.assertEquals(len(ev_obj), 2)
 
@@ -580,16 +580,16 @@ class TestEventRepoInt(IonIntegrationTestCase):
         self.assertEquals(len(ev_obj), 1)
 
         eq = EventQuery()
-        eq.set_filter(eq.filter_ts_created(str(t0-10), str(t0-1)))
+        eq.set_filter(eq.filter_ts_created(t0-10, t0-1))
         ev_obj = self.er.find_events_query(query=eq.get_query(), id_only=False)
         self.assertEquals(len(ev_obj), 0)
 
         eq = EventQuery()
-        eq.set_filter(eq.filter_ts_created(from_expr=str(t0+3)))
+        eq.set_filter(eq.filter_ts_created(from_expr=t0+3))
         ev_obj = self.er.find_events_query(query=eq.get_query(), id_only=False)
         self.assertEquals(len(ev_obj), 3)
 
         eq = EventQuery()
-        eq.set_filter(eq.filter_ts_created(to_expr=str(t0+2)))
+        eq.set_filter(eq.filter_ts_created(to_expr=t0+2))
         ev_obj = self.er.find_events_query(query=eq.get_query(), id_only=False)
         self.assertEquals(len(ev_obj), 3)

@@ -1,5 +1,5 @@
 CREATE TABLE "%(ds)s" (id varchar(300) PRIMARY KEY, rev int, doc json, type_ varchar(80),
-    origin varchar(300), origin_type varchar(80), sub_type varchar(120), ts_created varchar(14));
+    origin varchar(300), origin_type varchar(80), sub_type varchar(120), ts_created bigint);
 
 GRANT SELECT, INSERT, UPDATE, DELETE on "%(ds)s" TO ion;
 

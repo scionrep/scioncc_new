@@ -20,9 +20,9 @@ Resource:
   # Resource visibility level
   visibility: !ResourceVisibilityEnum
   # Timestamp when resource object was created (str in millis in UNIX epoch)
-  ts_created: ""
+  ts_created: !!python/long 0
   # Timestamp when resource object was last updated (str in millis in UNIX epoch)
-  ts_updated: ""
+  ts_updated: !!python/long 0
   # Holds a list of alternate IDs to this resource, e.g. for preload in the form prefix:id
   alt_ids: []
   # Additional attributes, e.g. from preload import
@@ -167,7 +167,7 @@ ResourceContainer:
   #  Unique identifier (matches the id of the internal persistable resource object)
   _id: ""
   # Timestamp str in millis in UNIX epoch
-  ts_created: ""
+  ts_created: !!python/long 0
   # Available lcstate transitions (key event, value target state)
   lcstate_transitions: {}
   # Available availability transitions (key event, value target state)

@@ -16,7 +16,7 @@ CapabilityContainer: !Extends_TaskableResource
 
 ContainerHeartbeat:
   container_id: ""
-  ts: ""
+  ts: !!python/long 0 
   attributes: {}
 ---
 
@@ -101,7 +101,7 @@ ProcessSchedule:
 # the the same state in case of restart, recovery or migration.
 ProcessState:
   state:
-  ts: ""
+  ts: !!python/long 0
   process_type:
 
 

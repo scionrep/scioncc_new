@@ -83,7 +83,7 @@ AsyncResultMsg:
   # Original request ID
   request_id: ""
   # Timestamp of successful execution
-  ts: ""
+  ts: !!python/long 0
   # Result to be delivered, or error
   result: {}
   # Status code
